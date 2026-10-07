@@ -94,7 +94,7 @@ function Game() {
               selected === null
                 ? "outline"
                 : i === current.correct
-                  ? "default"
+                  ? "success"
                   : i === selected
                     ? "destructive"
                     : "outline"
