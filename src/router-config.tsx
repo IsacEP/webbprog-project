@@ -1,18 +1,20 @@
-import { createBrowserRouter, type RouteObject } from "react-router";
-import App from "./App";
+import { createBrowserRouter, Link, type RouteObject } from "react-router"
+import App from "./App"
+import Daily from "./daily"
+import Game from "./game"
+import Play from "./play"
+import { Button } from "./components/ui/button"
 import {
   Card,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-} from "./components/ui/card";
-import ComposeSalad from "./compose-salad";
-import ViewCart from "./view-cart";
-import { NewSaladInfobox } from "./new-salad-info-box";
+} from "./components/ui/card"
+import LeaderBoard from "./leaderboard"
 
 const routerConfig: RouteObject[] = [
   {
-    //path: "/",
     Component: App,
     children: [
       {
@@ -20,44 +22,65 @@ const routerConfig: RouteObject[] = [
         Component: Home,
       },
       {
+        path: "/play",
+        Component: Play,
+      },
+      {
+        path: "/play/:uuid",
+        Component: Game,
+      },
+      {
+        path: "/daily-quiz",
+        Component: Daily,
+      },
+      {
+        path: "/leaderboard",
+        Component: LeaderBoard,
+      },
+      {
         path: "*",
         Component: PageNotFound,
       },
-      {
-        path: "/compose-salad",
-        Component: ComposeSalad,
-      },
-      {
-        path: "/view-cart",
-        Component: ViewCart,
-        children: [
-          {
-            path: "new/:uuid",
-            Component: NewSaladInfobox,
-          },
-        ],
-      },
     ],
   },
-];
+]
 
-const router = createBrowserRouter(routerConfig);
+const router = createBrowserRouter(routerConfig)
 
 function Home() {
   return (
     <Card className="md:w-3xl">
       <CardHeader>
-        <CardTitle>Välkommen till min salladsbar</CardTitle>
+        <CardTitle>Welcome to Trivia</CardTitle>
         <CardDescription>
-          Här kan du komponera och beställa sallader.
+          Start a new game or try today&apos;s daily quiz.
         </CardDescription>
       </CardHeader>
+      <CardFooter className="gap-2">
+        <Button nativeButton={false} render={<Link to="/play" />}>
+          Play
+        </Button>
+        <Button
+          variant="outline"
+          nativeButton={false}
+          render={<Link to="/daily-quiz" />}
+        >
+          Daily quiz
+        </Button>
+        <Button
+          variant="outline"
+          nativeButton={false}
+          render={<Link to="/leaderboard" />}
+        >
+          Leaderboard
+        </Button>
+      </CardFooter>
     </Card>
-  );
+  )
 }
 
 function PageNotFound() {
-  return <h2>Sidan kunde inte hittas</h2>;
+  return <h2>Page not found</h2>
 }
 
-export default router;
+export default router
