@@ -7,9 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { todayKey } from "./use-fetch-questions"
 
 export function dailyGameId(date = new Date()) {
-  return `daily-${date.toISOString().slice(0, 10)}`
+  return `daily-${todayKey(date)}`
 }
 
 function Daily() {
