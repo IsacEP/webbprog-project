@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, useParams, useSearchParams } from "react-router"
+import { Link, useOutletContext, useParams, useSearchParams } from "react-router"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,39 +9,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
-type Question = {
-  question: string
-  answers: string[]
-  correct: number
-}
-const PLACEHOLDER_QUESTIONS: Question[] = [
-  {
-    question: "What is the capital of Sweden?",
-    answers: ["Oslo", "Stockholm", "Copenhagen", "Helsinki"],
-    correct: 1,
-  },
-  {
-    question: "How many legs does a spider have?",
-    answers: ["6", "8", "10", "12"],
-    correct: 1,
-  },
-  {
-    question: "Which planet is closest to the sun?",
-    answers: ["Venus", "Earth", "Mercury", "Mars"],
-    correct: 2,
-  },
-]
+import type { OutletContextType } from "./App"
 
 function Game() {
   const { uuid } = useParams()
   const [searchParams] = useSearchParams()
   const difficulty = searchParams.get("difficulty") ?? "medium"
 
-  const questions = PLACEHOLDER_QUESTIONS
+  const { questions } = useOutletContext<OutletContextType>()
   const [index, setIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
+
+  // Empty array = still loading, otherwise index 0 >= length 0 shows "Game over"
+  if (questions.length === 0) {
+    return <p>Loading questions…</p>
+  }
 
   const finished = index >= questions.length
 
@@ -106,7 +89,10 @@ function Game() {
         ))}
       </CardContent>
       <CardFooter className="justify-between">
+        <div className="flex gap-2">
+        <span>Time: {score}</span> {/* TODO */}
         <span>Score: {score}</span>
+        </div>
         <Button disabled={selected === null} onClick={next}>
           Next
         </Button>
