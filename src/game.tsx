@@ -133,6 +133,9 @@ function Game() {
         </div>
         <Button disabled={selected === null} onClick={next}>
           Next
+          <Kbd className="bg-primary">
+            ⏎
+          </Kbd>
         </Button>
       </CardFooter>
     </Card>
