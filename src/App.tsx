@@ -2,11 +2,8 @@ import { Link, Outlet } from "react-router"
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "./components/ui/navigation-menu"
 import type { Question } from "./lib/questions"
 import { useFetchQuestions } from "./use-fetch-questions"
-import type { Question } from "./lib/questions"
-import { useFetchQuestions } from "./use-fetch-questions"
 
 export function App() {
-  const questions = useFetchQuestions("https://opentdb.com/")
 
   const questions = useFetchQuestions("https://opentdb.com/")
 
