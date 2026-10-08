@@ -15,9 +15,10 @@ import {
   CardHeader,
   CardTitle,
 } from "./components/ui/card"
-import {X, Check} from "lucide-react";
+import { X, Check } from "lucide-react"
 import { Button } from "./components/ui/button"
 import { Link } from "react-router"
+import { formatTime } from "./lib/utils"
 
 type LeaderboardEntry = {
   name: string
@@ -46,11 +47,6 @@ const users: LeaderboardEntry[] = [
     totalScore: 0,
   },
 ]
-function formatTime(seconds: number) {
-  const m = Math.floor(seconds / 60)
-  const s = Math.floor(seconds % 60)
-  return `${m}:${s.toString().padStart(2, "0")}`
-}
 
 export default function LeaderBoard() {
   return (
@@ -76,14 +72,18 @@ export default function LeaderBoard() {
             {users.map((user) => (
               <TableRow key={user.name}>
                 <TableCell className="font-medium">{user.name}</TableCell>
-                {user.correct.map((question) =>
-                <TableCell>{question ? <Check className="text-green-600"/> : <X className="text-red-600"/>}</TableCell>
-                )}
+                {user.correct.map((question) => (
+                  <TableCell>
+                    {question ? (
+                      <Check className="text-green-600" />
+                    ) : (
+                      <X className="text-red-600" />
+                    )}
+                  </TableCell>
+                ))}
                 <TableCell>{formatTime(user.totalTime)}</TableCell>
                 {/* <TableCell className="">{user.dailyScore}</TableCell> */}
-                <TableCell className="text-right">
-                  {user.totalScore}
-                </TableCell>
+                <TableCell className="text-right">{user.totalScore}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -95,9 +95,9 @@ export default function LeaderBoard() {
           </TableFooter>
         </Table>
       </CardContent>
-        <CardFooter>
+      <CardFooter>
         <Button render={<Link to={`/`}></Link>}>Home</Button>
-        </CardFooter>
+      </CardFooter>
     </Card>
   )
 }
