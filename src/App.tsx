@@ -38,9 +38,6 @@ export function App() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-        <main>
-          <Outlet />
-        </main>
       <main>
         <Outlet context={{ questions } satisfies OutletContextType} />
       </main>
