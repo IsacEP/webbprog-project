@@ -1,4 +1,5 @@
 import { Link, Outlet } from "react-router"
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "./components/ui/navigation-menu"
 
 export function App() {
   return (
@@ -8,6 +9,31 @@ export function App() {
             Trivia
           </Link>
         </header>
+
+        <NavigationMenu >
+        <NavigationMenuList className="flex gap-2">
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              render={<Link to="/">Home</Link>}
+            ></NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              render={<Link to="/play">Play</Link>}
+            ></NavigationMenuLink>
+          </NavigationMenuItem>
+           <NavigationMenuItem>
+            <NavigationMenuLink
+              render={<Link to="/daily-quiz">Daily Quiz</Link>}
+            ></NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              render={<Link to="/leaderboard">Leaderboard</Link>}
+            ></NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
         <main>
           <Outlet />
         </main>
