@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card"
 import type { OutletContextType } from "./App"
 import { Kbd } from "./components/ui/kbd"
+import { formatTime } from "./lib/utils"
 
 function Game() {
   const { uuid } = useParams()
@@ -27,6 +28,14 @@ function Game() {
   const [score, setScore] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
   const current = questions[index]
+  const [seconds, setSeconds] = useState(0)
+  const running = questions.length > 0 && index < questions.length
+
+  useEffect(() => {
+    if (!running) return
+    const id = setInterval(() => setSeconds((s) => s + 1), 1000)
+    return () => clearInterval(id)
+  }, [running])
 
   function answer(i: number) {
     if (!current || selected !== null) return
@@ -70,7 +79,7 @@ function Game() {
         <CardHeader>
           <CardTitle>Game over</CardTitle>
           <CardDescription>
-            You scored {score} / {questions.length}
+            You scored {score} / {questions.length} in {formatTime(seconds)}
           </CardDescription>
         </CardHeader>
         <CardFooter className="gap-2">
@@ -119,7 +128,7 @@ function Game() {
       </CardContent>
       <CardFooter className="justify-between">
         <div className="flex gap-2">
-          <span>Time: {score}</span> {/* TODO */}
+          <span>Time: {formatTime(seconds)}</span>
           <span>Score: {score}</span>
         </div>
         <Button disabled={selected === null} onClick={next}>
