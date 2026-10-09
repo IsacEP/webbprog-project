@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card"
 import { todayKey } from "./use-fetch-questions"
 import { Input } from "./components/ui/input"
-import { Field, FieldDescription, FieldLabel } from "./components/ui/field"
+import { Field, FieldLabel } from "./components/ui/field"
 import { useState, type FormEvent } from "react"
 import { useNavigate } from "react-router"
 
