@@ -18,7 +18,6 @@ export function dailyGameId(date = new Date()) {
 
 function Daily() {
   const [showError, setShowError] = useState(false)
-
   const [name, setName] = useState("")
 
   const gameId = dailyGameId()
