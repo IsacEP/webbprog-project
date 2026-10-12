@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react"
-import {
-  Link,
-  useOutletContext,
-  useParams,
-  useSearchParams,
-} from "react-router"
+import { Link, useParams, useSearchParams } from "react-router"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -14,22 +9,46 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import type { OutletContextType } from "./App"
 import { Kbd } from "./components/ui/kbd"
 import { formatTime } from "./lib/utils"
 import { findDailyResult, saveDailyResult } from "./lib/leaderboard"
+import {
+  buildQuestionsUrl,
+  DAILY_CONFIG,
+  readTriviaConfig,
+} from "./lib/opentdb"
+import { useFetchQuestions } from "./use-fetch-questions"
 
 function Game() {
   const { uuid } = useParams()
   const [searchParams] = useSearchParams()
-  const difficulty = searchParams.get("difficulty") ?? "medium"
   const name = searchParams.get("name")?.trim() ?? ""
   const dailyDate = uuid?.startsWith("daily-") ? uuid.slice(6) : null
   const [previousDailyResult] = useState(() =>
     dailyDate && name ? findDailyResult(name, dailyDate) : undefined
   )
 
-  const { questions } = useOutletContext<OutletContextType>()
+  const config = dailyDate ? DAILY_CONFIG : readTriviaConfig(searchParams)
+  const questionUrl = buildQuestionsUrl(config)
+  const gameLabel = dailyDate
+    ? "Daily quiz"
+    : [
+        config.category
+          ? (searchParams.get("categoryName") ?? `Category ${config.category}`)
+          : "Any category",
+        config.difficulty ?? "Any difficulty",
+        config.type === "boolean"
+          ? "True / False"
+          : config.type === "multiple"
+            ? "Multiple choice"
+            : "Any type",
+      ].join(" · ")
+  const { questions, error, retry } = useFetchQuestions(
+    uuid ?? "",
+    questionUrl,
+    Boolean(dailyDate),
+    !previousDailyResult && (!dailyDate || Boolean(name))
+  )
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState<number[]>([])
   const selected = answers[index] ?? null
@@ -143,7 +162,27 @@ function Game() {
     )
   }
 
-  // Empty array = still loading, otherwise index 0 >= length 0 shows "Game over"
+  if (error) {
+    return (
+      <Card className="md:w-3xl">
+        <CardHeader>
+          <CardTitle>Could not load questions</CardTitle>
+          <CardDescription>{error}</CardDescription>
+        </CardHeader>
+        <CardFooter className="gap-2">
+          <Button onClick={retry}>Try again</Button>
+          <Button
+            variant="outline"
+            nativeButton={false}
+            render={<Link to={dailyDate ? "/daily-quiz" : "/play"} />}
+          >
+            Change settings
+          </Button>
+        </CardFooter>
+      </Card>
+    )
+  }
+
   if (questions.length === 0) {
     return <p>Loading questions…</p>
   }
@@ -186,7 +225,7 @@ function Game() {
     <Card className="md:w-3xl">
       <CardHeader>
         <CardDescription>
-          Question {index + 1} / {questions.length} · {difficulty} · game {uuid}
+          Question {index + 1} / {questions.length} · {gameLabel}
         </CardDescription>
         <CardTitle>{current.question}</CardTitle>
       </CardHeader>
@@ -224,4 +263,8 @@ function Game() {
   )
 }
 
-export default Game
+export default function GameRoute() {
+  const { uuid } = useParams()
+  const [searchParams] = useSearchParams()
+  return <Game key={`${uuid}?${searchParams.toString()}`} />
+}

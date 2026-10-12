@@ -5,12 +5,8 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "./components/ui/navigation-menu"
-import type { Question } from "./lib/questions"
-import { useFetchQuestions } from "./use-fetch-questions"
 
 export function App() {
-  const questions = useFetchQuestions("https://opentdb.com/")
-
   return (
     <>
       <NavigationMenu className="sticky top-0 z-50 flex w-full max-w-none justify-between rounded-none border-0 border-b-4 bg-white px-3 py-2">
@@ -44,15 +40,11 @@ export function App() {
       </NavigationMenu>
       <div className="mx-auto grid max-w-5xl justify-items-center gap-4 p-6">
         <main>
-          <Outlet context={{ questions } satisfies OutletContextType} />
+          <Outlet />
         </main>
       </div>
     </>
   )
-}
-
-export type OutletContextType = {
-  questions: Question[]
 }
 
 export default App
