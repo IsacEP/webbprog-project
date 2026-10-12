@@ -41,9 +41,10 @@ function Daily() {
         <CardHeader>
           <CardTitle>Daily Quiz</CardTitle>
           <CardDescription>
-            Everyone gets the same questions today. One attempt per day.
+            Play three questions. One saved result per name each day on this
+            browser.
             <Field className="my-5">
-              <FieldLabel htmlFor="input-field-username">Name</FieldLabel>
+              <FieldLabel htmlFor="Name">Name</FieldLabel>
               <Input
                 id="Name"
                 type="text"
