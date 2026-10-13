@@ -55,6 +55,11 @@ function Daily() {
                   setShowError(false)
                 }}
               />
+              {showError && (
+                <FieldLabel className="text-destructive" htmlFor="Name">
+                  Enter your name!
+                </FieldLabel>
+              )}
             </Field>
           </CardDescription>
         </CardHeader>
