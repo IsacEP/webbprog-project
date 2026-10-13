@@ -12,14 +12,31 @@ import {
 import { Input } from "./components/ui/input"
 import { Field, FieldLabel } from "./components/ui/field"
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./components/ui/select"
+import {
   fetchCategories,
   type Difficulty,
   type QuestionType,
   type TriviaCategory,
 } from "./lib/opentdb"
 
-const selectClassName =
-  "h-8 w-full rounded-none border-2 border-input bg-white px-2.5 text-sm focus-visible:border-ring focus-visible:outline-none"
+const difficultyItems: { label: string; value: Difficulty | "" }[] = [
+  { label: "Any difficulty", value: "" },
+  { label: "Easy", value: "easy" },
+  { label: "Medium", value: "medium" },
+  { label: "Hard", value: "hard" },
+]
+
+const typeItems: { label: string; value: QuestionType | "" }[] = [
+  { label: "Any type", value: "" },
+  { label: "Multiple choice", value: "multiple" },
+  { label: "True / False", value: "boolean" },
+]
 
 function Play() {
   const navigate = useNavigate()
@@ -31,6 +48,11 @@ function Play() {
   const [categoryError, setCategoryError] = useState(false)
   const [categoryAttempt, setCategoryAttempt] = useState(0)
   const [amountError, setAmountError] = useState(false)
+
+  const categoryItems = [
+    { label: "Any category", value: "" },
+    ...categories.map((item) => ({ label: item.name, value: String(item.id) })),
+  ]
 
   useEffect(() => {
     let active = true
@@ -83,7 +105,7 @@ function Play() {
         </CardHeader>
         <CardContent className="grid gap-4 sm:grid-cols-2">
           <Field>
-            <FieldLabel htmlFor="amount">Number of questions (1–50)</FieldLabel>
+            <FieldLabel htmlFor="amount">Number of questions (1-50)</FieldLabel>
             <Input
               id="amount"
               type="number"
@@ -101,19 +123,22 @@ function Play() {
           </Field>
           <Field>
             <FieldLabel htmlFor="category">Category</FieldLabel>
-            <select
-              id="category"
-              className={selectClassName}
+            <Select
+              items={categoryItems}
               value={category}
-              onChange={(event) => setCategory(event.target.value)}
+              onValueChange={(value) => setCategory(value ?? "")}
             >
-              <option value="">Any category</option>
-              {categories.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger id="category">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {categoryItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             {categoryError && (
               <div className="text-sm">
                 Categories could not be loaded. You can still play with any
@@ -130,34 +155,41 @@ function Play() {
           </Field>
           <Field>
             <FieldLabel htmlFor="difficulty">Difficulty</FieldLabel>
-            <select
-              id="difficulty"
-              className={selectClassName}
+            <Select
+              items={difficultyItems}
               value={difficulty}
-              onChange={(event) =>
-                setDifficulty(event.target.value as Difficulty | "")
-              }
+              onValueChange={(value) => setDifficulty(value ?? "")}
             >
-              <option value="">Any difficulty</option>
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
+              <SelectTrigger id="difficulty">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {difficultyItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
           <Field>
             <FieldLabel htmlFor="question-type">Question type</FieldLabel>
-            <select
-              id="question-type"
-              className={selectClassName}
+            <Select
+              items={typeItems}
               value={type}
-              onChange={(event) =>
-                setType(event.target.value as QuestionType | "")
-              }
+              onValueChange={(value) => setType(value ?? "")}
             >
-              <option value="">Any type</option>
-              <option value="multiple">Multiple choice</option>
-              <option value="boolean">True / False</option>
-            </select>
+              <SelectTrigger id="question-type">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {typeItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
           <br />
         </CardContent>

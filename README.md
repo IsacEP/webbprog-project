@@ -15,7 +15,7 @@ Open the local URL printed by Vite (usually `http://localhost:5173`). An interne
 
 ## How it works
 
-- **Play:** Choose 1–50 questions, a category, difficulty, and question type (multiple choice, true/false, or any). The app requests a new set from Open Trivia DB for that game.
+- **Play:** Choose 1-50 questions, a category, difficulty, and question type (multiple choice, true/false, or any). The app requests a new set from Open Trivia DB for that game.
 - **Daily quiz:** Enter a name and answer three questions. The questions are cached for the day in your browser, with one saved result per name and day.
 - **Leaderboard:** Completed daily results are saved in browser `localStorage` and ranked by score, then time. Results are only visible in the same browser; they are not shared between devices. The daily questions may also differ between browsers.
 
