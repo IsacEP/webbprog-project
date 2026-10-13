@@ -159,6 +159,7 @@ function Play() {
               <option value="boolean">True / False</option>
             </select>
           </Field>
+          <br />
         </CardContent>
         <CardFooter>
           <Button type="submit">Start game</Button>

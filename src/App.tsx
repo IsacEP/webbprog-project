@@ -9,7 +9,7 @@ import {
 export function App() {
   return (
     <>
-      <NavigationMenu className="sticky top-0 z-50 flex w-full max-w-none justify-between rounded-none border-0 border-b-4 bg-white px-3 py-2">
+      <NavigationMenu className="sticky top-0 z-50 flex w-full max-w-none justify-between rounded-none border-0 border-b-7 bg-white px-3 py-2">
         <header className="d-inline">
           <Link to="/" className="font-heading text-lg font-medium">
             Trivia
