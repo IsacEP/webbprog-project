@@ -64,7 +64,7 @@ function Daily() {
           </CardDescription>
         </CardHeader>
         <CardFooter>
-          <Button nativeButton={false} type="submit">
+          <Button nativeButton type="submit">
             Start todays quiz
           </Button>
         </CardFooter>
